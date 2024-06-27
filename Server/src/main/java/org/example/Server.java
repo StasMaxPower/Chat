@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.Authentification.AuthService;
+import org.example.Authentification.SimpleAuthService;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,21 +14,25 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
-
     private ServerSocket server;
     private Socket socket;
     private int port = 7777;
     private List<ClientHandler> clients = new CopyOnWriteArrayList<>();
+    private AuthService authService;
+
+    public AuthService getAuthService() {
+        return authService;
+    }
 
     public Server() {
+        authService = new SimpleAuthService();
         try {
             server = new ServerSocket(port);
             System.out.println("Сервер успешно запущен");
 
             while (true) {
                 socket = server.accept();
-                ClientHandler handler = new ClientHandler(this, socket);
-                clients.add(handler);
+                new ClientHandler(this, socket);
                 System.out.println("Клиент успешно соединился " + socket.getPort());
             }
 
@@ -44,10 +51,17 @@ public class Server {
         }
     }
 
-    public void broadcastMessage(String message){
+    public void broadcastMessage(String message) {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
     }
 
+    public void subscribe(ClientHandler handler) {
+        clients.add(handler);
+    }
+
+    public void unsubscribe(ClientHandler handler) {
+        clients.remove(handler);
+    }
 }

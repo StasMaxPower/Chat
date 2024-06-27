@@ -8,18 +8,22 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.client.ChatController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-<!--    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>-->
+    <HBox fx:id="authForm" spacing="20">
+        <TextField fx:id="loginField" HBox.hgrow="ALWAYS"/>
+        <PasswordField fx:id="passwordField" HBox.hgrow="ALWAYS"/>
+        <Button text="Вход" onAction="#tryToAction"/>
+            </HBox>
 
     <TextArea fx:id="textarea" VBox.vgrow="ALWAYS" editable="false"/>
 
-    <HBox spacing="20">
+    <HBox fx:id="messageForm" managed="false" visible="false" spacing="20">
         <TextField fx:id="textField" promptText="Введите сообщение" HBox.hgrow="ALWAYS" onAction="#onSendButtonClick"/>
         <Button text="Отправить" onAction="#onSendButtonClick"/>
     </HBox>
